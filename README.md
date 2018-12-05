@@ -10,3 +10,8 @@ Vamos a construir la estructura de objetos necesaria para implementar un pequeñ
  - Importar las clases en el fichero VideoSystem.html.
  - Terminar de crear todos los objetos del fichero ObjectsVideoSystem.js.
  - Añadir excepciones al fichero BaseException.js.
+
+ ## Version 1.0.2
+ - Terminar de añadir objetos al fichero ObjectsVideoSystem.js.
+ - Añadir el singleton al fichero VideoSystem.js.
+ - Añadir algunos metodos al fichero VideoSystem.js.
