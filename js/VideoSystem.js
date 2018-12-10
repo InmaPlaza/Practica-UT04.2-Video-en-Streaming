@@ -56,6 +56,32 @@ function EmailExistsVideoSystemException() {
 EmailExistsVideoSystemException.prototype = new VideoSystemException(); //Heredamos de VideoSystemException
 EmailExistsVideoSystemException.prototype.constructor = EmailExistsVideoSystemException;
 
+function ProductionVideoSystemException() {
+	this.name = "ProductionVideoSystemException";
+	this.message = "Error: El metodo necesita una Production como paramentro.";
+}
+ProductionVideoSystemException.prototype = new VideoSystemException(); //Heredamos de VideoSystemException
+ProductionVideoSystemException.prototype.constructor = ProductionVideoSystemException;
+
+function ProductionExistsVideoSystemException() {
+	this.name = "ProductionExistsVideoSystemException";
+	this.message = "Error: La produccion ya existe en el sistema.";
+}
+ProductionExistsVideoSystemException.prototype = new VideoSystemException(); //Heredamos de VideoSystemException
+ProductionExistsVideoSystemException.prototype.constructor = ProductionExistsVideoSystemException;
+
+function ProductionNotExistsVideoSystemException() {
+	this.name = "ProductionNotExistsVideoSystemException";
+	this.message = "Error: La produccion NO existe en el sistema.";
+}
+ProductionNotExistsVideoSystemException.prototype = new VideoSystemException(); //Heredamos de VideoSystemException
+ProductionNotExistsVideoSystemException.prototype.constructor = ProductionNotExistsVideoSystemException;
+
+function PersonVideoSystemException() {
+	this.name = "PersonVideoSystemException";
+	this.message = "Error: El metodo necesita una persona como paramentro.";
+}
+
 function PersonVideoSystemException() {
 	this.name = "PersonVideoSystemException";
 	this.message = "Error: El metodo necesita un Person como paramentro.";
@@ -156,7 +182,7 @@ var VideoSystem = (function (){
 			//Dado una categoría, devuelve la posición de esa categoría en el array de categorías o -1 si no lo encontramos.
 			function getCategoryPosition(category){
 				if (!(category instanceof Category)) { 
-					throw new CategoryImageManagerException();
+					throw new CategoryVideoSystemException();
 				}		
 
 				function compareElements(element) {
@@ -210,7 +236,7 @@ var VideoSystem = (function (){
 				if (!(user instanceof User)) { 
 					throw new UserVideoSystemException ();
 				}		
-				var position = getUserPosition(user); 	
+				var position = getUsernamePosition(user); 	
 				if (position !== -1){
 					_users.splice(position, 1);															
 				} else{
@@ -220,7 +246,7 @@ var VideoSystem = (function (){
 			}
 
 			//Dado un usuario, devuelve la posición de ese usuario en el array de usuarios o -1 si no lo encontramos.
-			function getUserPosition(user){
+			function getUsernamePosition(user){
 				if (!(user instanceof User)) { 
 					throw new UserVideoSystemException ();
 				}		
@@ -243,6 +269,129 @@ var VideoSystem = (function (){
 				}
 				
 				return _users.findIndex(compareElements);		
+			}
+
+			/* Definición del atributo productions como array para contener todos las producciones del gestor. */
+			var _productions = []; //array con las producciones del sistema.
+			//Devuelve un iterator de los producciones del gestor
+			Object.defineProperty(this, 'productions', {
+				get:function(){
+					var nextIndex = 0;		    
+					return {
+						next: function(){
+							return nextIndex < _productions.length ?
+								{value: _productions[nextIndex++], done: false} : {done: true};
+						}
+					}
+				}	
+			});
+
+			//Añade una nueva produccion al sistema
+			this.addProduction = function(production){
+				if(!(production instanceof Production)){
+					throw new ProductionVideoSystemException;
+				}
+				
+				var position = getProductionPosition(production); 
+				//Si la produccion no existe en el sistema..	
+				if (position === -1){
+					_productions.push(production); //La añadimos
+				} else{
+					throw new ProductionExistsVideoSystemException(); //Lanzamos una excepcion
+				}
+				return _productions.length;
+			};
+
+			//Elimina una produccion del gestor
+			this.removeProduction = function(production){
+				if(!(production instanceof Production)){
+					throw new ProductionVideoSystemException;
+				}
+				
+				var position = getProductionPosition(production);
+				//Si la produccion existe en el sistema...
+				if (position !== -1){
+					_productions.splice(position, 1); //La borramos		
+				} else{
+					throw new ProductionNotExistsVideoSystemException();
+				}	
+				return _productions.length;
+			};
+
+			//Dado una produccion, devuelve la posición de esa produccion en el array de production o -1 si no lo encontramos.
+			this.getProductionPosition = function(production){
+				if(!(production instanceof Production)){
+					throw new ProductionVideoSystemException;
+				}
+
+				function compareElements(element) {
+				  return (element.title === production.title)
+				}
+				return _productions.findIndex(compareElements);		
+			}
+			
+			/* Definición del atributo actor como array para contener todos los actores del gestor. */
+			var _actors = []; //array con los actores del sistema.
+			//Devuelve un iterador que permite recorrer los actores registrados en el sistema
+			Object.defineProperty(this, 'actors', {
+				get:function(){
+					var nextIndex = 0;		    
+					return {
+						next: function(){
+							return nextIndex < _actors.length ?
+								{value: _actors[nextIndex++].actor, done: false} : {done: true};
+						}
+					}
+				}	
+			});
+
+			//Añade una nuevo actor
+			this.addActor = function(actor){
+				if(!(actor instanceof Person)){
+					throw new PersonVideoSystemException ();
+				}
+				
+				var position = getActorPosition(actor); 
+				//Si la posicion de position es igual a -1, no
+				//existe ningun actor con el mismo nombre
+				if (position === -1){
+					_actors.push(
+						{
+							actor: actor,
+							productions: []
+						}
+					);
+				} else{
+					throw new PersonExistsVideoSystemException;
+				}
+				return _actors.length;
+			};
+
+			//Elimina un actor del sistema
+			this.removeActor = function(actor){
+				if(!(actor instanceof Person)){
+					throw new PersonVideoSystemException();
+				}
+
+				var position = this.getActorPosition(actor);
+				if (position !== -1){
+					_actors.splice(position, 1);			
+				} else{
+					throw new PersonNotExistsVideoSystemException();
+				}
+				return _actors.length;
+			};
+
+			//Dado un objeto Actor, devuelve la posición de ese objeto.
+			this.getActorPosition = function(actor){
+				if(!(actor instanceof Person)){
+					throw new PersonVideoSystemException();
+				}
+
+				function compareElements(element) {
+				  return (element.name === actor.name || element.lastName1 === actor.lastName1)
+				}
+				return _actors.findIndex(compareElements);		
 			}
 
 			/* Definición del atributo directors como array para contener todos los directores del gestor. */
@@ -270,11 +419,15 @@ var VideoSystem = (function (){
 
 				var position = getPosition(person);
 				
-				//Si el nombre del director no está en el sistema...
-				if ((position === -1)){
-					_directors.push(person); //Lo añadimos
-				}else{
-					throw new PersonExistsVideoSystemException(); //Lanzamos una excepcion
+				if (position === -1){
+					_directors.push(
+						{
+							director : director,
+							productions:[]
+						}
+					);
+				} else{
+					throw new PersonExistsVideoSystemException();
 				}
 
 				return _directors.length; //Devuelvo el numero de elementos
@@ -301,7 +454,7 @@ var VideoSystem = (function (){
 				}		
 
 				function compareElements(element) {
-				  return (element.name === person.name)
+				  return (element.name === person.name || element.lastName1 === person.lastName1)
 				}
 				
 				return _directors.findIndex(compareElements);		

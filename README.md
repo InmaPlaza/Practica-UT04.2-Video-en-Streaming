@@ -15,3 +15,12 @@ Vamos a construir la estructura de objetos necesaria para implementar un pequeñ
  - Terminar de añadir objetos al fichero ObjectsVideoSystem.js.
  - Añadir el singleton al fichero VideoSystem.js.
  - Añadir algunos metodos al fichero VideoSystem.js.
+    - Getter/Setter name.
+    - Getters categories, addCategory, removeCategory.
+    - Getters users, addUser, removeUser.
+    - Getters directors, addDirector, removeDirector.
+
+## Version 1.0.3
+ - Añadir los siguientes metodos al fichero VideoSystem.js:
+    - Getters productions, addProduction, removeProduction.
+    - Getters actors, addActor, removeActor.
