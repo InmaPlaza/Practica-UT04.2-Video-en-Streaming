@@ -548,8 +548,8 @@ function Coordinate(latitude, longitude){
 	});		
 
 }
-Coords.prototype = {};
-Coords.prototype.constructor = Coords;
+Coordinate.prototype = {};
+Coordinate.prototype.constructor = Coordinate;
 Coordinate.prototype.toString = function(){
 	return "Longitud: " + this.longitude + " Latitud: " + this.latitude;
 }

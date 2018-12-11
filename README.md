@@ -24,3 +24,10 @@ Vamos a construir la estructura de objetos necesaria para implementar un pequeñ
  - Añadir los siguientes metodos al fichero VideoSystem.js:
     - Getters productions, addProduction, removeProduction.
     - Getters actors, addActor, removeActor.
+
+## Version 1.0.4
+ - Añadir los siguientes metodos al fichero VideoSystem.js:
+    - assignCategory y deassignCategory.
+    - assignDirector y deassignDirector.
+    - assignActor y deassignActor.
+    - getCast, getProductionsDirector, getProductionsActor y getProductionsCategory.

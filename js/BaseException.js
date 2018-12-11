@@ -23,8 +23,8 @@ function InvalidAccessException(param) {
 	this.name = "InvalidAccessException";
 	this.message = "El constructor de " + param + " no puede ser llamado con una funcion.";
 }
-InvalidAccessDateException.prototype = new BaseException(); 
-InvalidAccessDateException.prototype.constructor = InvalidAccessDateException;
+InvalidAccessException.prototype = new BaseException(); 
+InvalidAccessException.prototype.constructor = InvalidAccessException;
 
 //Excepciones de validación de parámetros. Reutilizables en todas las clases
 function ParameterValidationException() {
