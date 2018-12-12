@@ -91,14 +91,14 @@ PersonVideoSystemException.prototype.constructor = PersonVideoSystemException;
 
 function PersonExistsVideoSystemException() {
 	this.name = "PersonExistsVideoSystemException";
-	this.message = "Error: El director ya existe en el sistema.";
+	this.message = "Error: La persona ya existe en el sistema.";
 }
 PersonExistsVideoSystemException.prototype = new VideoSystemException(); //Heredamos de VideoSystemException
 PersonExistsVideoSystemException.prototype.constructor = PersonExistsVideoSystemException;
 
 function PersonNotExistsVideoSystemException() {
 	this.name = "PersonNotExistsVideoSystemException";
-	this.message = "Error: El director NO existe en el sistema.";
+	this.message = "Error: La persona NO existe en el sistema.";
 }
 PersonNotExistsVideoSystemException.prototype = new VideoSystemException(); //Heredamos de VideoSystemException
 PersonNotExistsVideoSystemException.prototype.constructor = PersonNotExistsVideoSystemException;
@@ -244,7 +244,7 @@ var VideoSystem = (function (){
 				}	
 
 				var positionUsername = this.getUsernamePosition(user);
-				var positionEmail = this.etEmailPosition(email); 
+				var positionEmail = this.getEmailPosition(user); 
 				
 				//Si el nombre de usuario ya está en el sistema...
 				if (!(positionUsername === -1)){
@@ -442,7 +442,7 @@ var VideoSystem = (function (){
 			this.addDirector = function(director){
 				//Comprobamos que el director se crea con el operador new
 				if (!(director instanceof Person)) { 
-					throw new PersonVideoSystemException ();
+					throw new PersonVideoSystemException();
 				}	
 
 				var position = this.getDirectorPosition(director);
@@ -461,10 +461,10 @@ var VideoSystem = (function (){
 				return _directors.length; //Devuelvo el numero de elementos
 			}
 
-			//Elimina un nuevo autor del gestor
+			//Elimina un nuevo director del gestor
 			this.removeDirector = function(person){
 				if (!(person instanceof Person)) { 
-					throw new PersonVideoSystemException ();
+					throw new PersonVideoSystemException();
 				}		
 				var position = this.getDirectorPosition(person); 	
 				if (position !== -1){

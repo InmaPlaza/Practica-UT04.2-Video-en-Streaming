@@ -31,3 +31,6 @@ Vamos a construir la estructura de objetos necesaria para implementar un pequeñ
     - assignDirector y deassignDirector.
     - assignActor y deassignActor.
     - getCast, getProductionsDirector, getProductionsActor y getProductionsCategory.
+
+## Version 1.0.5
+ - Correccion de errores.
